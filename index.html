@@ -177,7 +177,10 @@ const texture = textureLoader.load("https://live.staticflickr.com/7240/730404355
 
 const sunGeometry = new THREE.SphereGeometry(10,100,100);
 const sunMaterial = new THREE.MeshBasicMaterial({
-    color: "black",
+    color: "white",
+    emissive: "yellow",
+    emissiveIntensity: 10000,
+	map: texture,
 });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 sun.position.set(-40,20,-40);
@@ -191,7 +194,7 @@ const cubeMaterial = new THREE.MeshStandardMaterial({
     color: "white",
     metalness: 1,
     roughness: 0.1,
-    emissive: "skyblue",
+    emissive: "white",
 	map: texture,
 
 });
@@ -233,6 +236,7 @@ animate();
 </script>
     </body>
 </html>
+
 
 
 
