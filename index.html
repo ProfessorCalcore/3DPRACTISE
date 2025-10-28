@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>3d Practise</title>
+<style>
+body{
+    background-color: black;
+    margin: 0;
+    overflow: hidden;
+}
+
+#cube-button{
+    position: absolute;
+    left: 40%;
+    top: 46%;
+    width: 450px;
+    height: 450px;
+    background: transparent;
+    outline: none;
+    border-width: 0;
+    color: white;
+}
+
+#orbit-speed-label{
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    margin-right: 10px;
+
+}
+
+#cubes-label{
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    margin-right: 10px;
+    display: flex;
+  
+}
+
+#upgrade-speed{
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    margin-right: 10px;
+    display: flex;
+
+}
+
+
+#more-cubes{
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    margin-right: 10px;
+
+}
+</
+</style>
+    </head>
+
+
+    <body>
+        <label id="orbit-speed-label"style="z-index: 10;">Orbit Speed: 0</label>
+        <label id="cubes-label"style="z-index: 10;">Cubes: 0</label>
+        <button id="upgrade-speed">Double Speed: 10 Cubes</button>
+        <button id= "more-cubes">More Cubes: 100 Cubes</button>
+
+        <button id="cube-button"></button>
+        <script type="module">
+
+
+// ============================
+// IMPORTS
+// ============================
+import * as THREE from "https://unpkg.com/three@0.170.0/build/three.module.js";
+
+const cubeButton = document.querySelector("#cube-button");
+const orbitSpeedLabel = document.querySelector("#orbit-speed-label");
+const cubesLabel = document.querySelector("#cubes-label");
+const upgradeSpeed = document.querySelector("#upgrade-speed");
+const moreCubes = document.querySelector("#more-cubes");
+
+let cubes = 10000;
+let speedCost = 10;
+let cubesCost = 100;
+
+let angle = 0;
+let orbitRadius = 100;
+let angleSpeed = 0;
+
+let cubeFactor = 1;
+// ============================
+// UPDATE LABELS
+// ============================
+function updateCubes() {
+    cubesLabel.textContent = "Cubes: " + cubes;
+}
+function updateSpeedCost() {
+    upgradeSpeed.textContent = "Double Speed: " + speedCost + " Cubes";
+}
+function updateOrbitSpeed() {
+    orbitSpeedLabel.textContent = "Orbit Speed: " + angleSpeed;
+}
+function updateCubesCost() {
+    moreCubes.textContent = "More Cubes: " + cubesCost;
+}
+
+// ============================
+// CUBE EVENT LISTENER
+// ============================
+cubeButton.addEventListener("mouseup", function() {
+    cubes += cubeFactor;
+    cubesLabel.textContent = "Cubes: " + cubes;
+});
+
+// ============================
+// UPGRADE SPEED EVENT LISTENER
+// ============================
+upgradeSpeed.addEventListener("click", function() {
+    if(cubes >= speedCost) {
+        cubes -= speedCost;
+        speedCost *= 1.5;
+        speedCost = Math.floor(speedCost);
+       
+        angleSpeed *= 2;
+        angleSpeed += 0.000001;
+
+
+        updateSpeedCost();
+        updateCubes();
+        updateOrbitSpeed();
+        
+    }
+});
+
+// ============================
+// UPGRADE CUBES EVENT LISTENER
+// ============================
+moreCubes.addEventListener("click", function() {
+    if(cubes >= cubesCost) {
+        cubes -= cubesCost;
+        cubesCost *= 1.25;
+        cubesCost = Math.floor(cubesCost);
+        cubeFactor += 1
+        updateCubesCost();
+        updateCubes();
+ 
+    }    
+});
+
+
+// ============================
+// SCENE SET UP
+// ============================
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/ window.innerHeight, 0.1, 10000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// ============================
+// LIGHT OBJECT SET UP
+// ============================
+const light =  new THREE.PointLight("white", 1000000);
+light.position.set(-40,20,-10);
+scene.add(light);
+
+
+// ============================
+// SUN PROPERTIES
+// ============================
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load("20250725_095458.jpg");
+
+
+const sunGeometry = new THREE.SphereGeometry(10,100,100);
+const sunMaterial = new THREE.MeshStandardMaterial({
+    color: "black",
+    emissive: "white",
+    emissiveIntensity: 10,
+    map: texture,
+	
+   
+});
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+sun.position.set(-40,20,-40);
+scene.add(sun);
+
+// ============================
+// CUBE PROPERTIES
+// ============================
+const cubeGeometry = new THREE.BoxGeometry(15,15,15);
+const cubeMaterial = new THREE.MeshStandardMaterial({
+    color: "white",
+    metalness: 1,
+    roughness: 0.1,
+    emissive: "skyblue"
+});
+const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cube.position.set(0,0,-40)
+scene.add(cube);
+
+// ============================
+// CAMERA SET UP
+// ============================
+camera.position.set(0, -10, 100);
+
+
+// ============================
+// ANIMATION
+// ============================
+function animate() {
+    requestAnimationFrame(animate);
+    angle += angleSpeed;
+
+    sun.position.x = 0 + orbitRadius * Math.cos(angle);
+    sun.position.z = -40 + orbitRadius * Math.sin(angle);
+
+    camera.lookAt(0,0,0);
+
+
+  
+    cube.rotation.x += Math.PI * 0.001;
+    cube.rotation.y += Math.PI * 0.001;
+
+
+renderer.render(scene, camera);
+}
+animate();
+
+// ============================
+// END OF SCRIPT
+// ============================
+</script>
+    </body>
+</html>
