@@ -176,13 +176,9 @@ const texture = textureLoader.load("https://raw.githubusercontent.com/ProfessorC
 
 
 const sunGeometry = new THREE.SphereGeometry(10,100,100);
-const sunMaterial = new THREE.MeshStandardMaterial({
+const sunMaterial = new THREE.MeshBasicMaterial({
     color: "black",
-    emissive: "white",
-    emissiveIntensity: 10,
     map: texture,
-	
-   
 });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 sun.position.set(-40,20,-40);
@@ -236,5 +232,6 @@ animate();
 </script>
     </body>
 </html>
+
 
 
