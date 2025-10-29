@@ -81,7 +81,7 @@ const cubesLabel = document.querySelector("#cubes-label");
 const upgradeSpeed = document.querySelector("#upgrade-speed");
 const moreCubes = document.querySelector("#more-cubes");
 
-let cubes = 10000;
+let cubes = 1;
 let speedCost = 10;
 let cubesCost = 100;
 
@@ -162,7 +162,7 @@ document.body.appendChild(renderer.domElement);
 // ============================
 // LIGHT OBJECT SET UP
 // ============================
-const light =  new THREE.PointLight("white", 10000000);
+const light =  new THREE.PointLight("white", 10000);
 light.position.set(-40,20,-10);
 scene.add(light);
 
@@ -176,11 +176,10 @@ const textureLoader = new THREE.TextureLoader();
 
 const sunGeometry = new THREE.SphereGeometry(10,100,100);
 const sunMaterial = new THREE.MeshStandardMaterial({
-	color: "white",
-	emissive: "yellow",
-    emmissiveIntensity: 1000,
-	metalness: 1,
-	roughness: 0.1,
+	color: "black",
+	emissive: "white",
+        emissiveIntensity: 1000,
+	side: THREE.DoubleSide,
 });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 sun.position.set(-40,20,-40);
@@ -191,10 +190,10 @@ scene.add(sun);
 // ============================
 const cubeGeometry = new THREE.BoxGeometry(15,15,15);
 const cubeMaterial = new THREE.MeshStandardMaterial({
-    color: "white",
-    metalness: 1,
+    color: "skyblue",
+    metalness: 0,
     roughness: 0.1,
-    emissive: "skyblue",
+    side: THREE.DoubleSide,
 
 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -216,6 +215,8 @@ function animate() {
 
     sun.position.x = 0 + orbitRadius * Math.cos(angle);
     sun.position.z = -40 + orbitRadius * Math.sin(angle);
+  
+    light.position.copy(sun.position);
 
     camera.lookAt(0,0,0);
 
@@ -235,6 +236,7 @@ animate();
 </script>
     </body>
 </html>
+
 
 
 
