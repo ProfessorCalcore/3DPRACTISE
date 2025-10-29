@@ -171,13 +171,16 @@ scene.add(light);
 // SUN PROPERTIES
 // ============================
 const textureLoader = new THREE.TextureLoader();
-const texture = textureLoader.load("https://raw.githubusercontent.com/ProfessorCalcore/3DPRACTISE/main/20250725_095458.jpg");
 
 
 
 const sunGeometry = new THREE.SphereGeometry(10,100,100);
-const sunMaterial = new THREE.MeshBasicMaterial({
-	map: texture,
+const sunMaterial = new THREE.MeshStandardMaterial({
+	color: "white",
+	emissive: "yellow",
+    emmissiveIntensity: 1000,
+	metalness: 1,
+	roughness: 0.1,
 });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 sun.position.set(-40,20,-40);
@@ -192,7 +195,6 @@ const cubeMaterial = new THREE.MeshStandardMaterial({
     metalness: 1,
     roughness: 0.1,
     emissive: "skyblue",
-	map: texture,
 
 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -233,6 +235,7 @@ animate();
 </script>
     </body>
 </html>
+
 
 
 
